@@ -12,4 +12,9 @@ public record VarExp(String variableName) implements Expression {
         }
         return symbolTable.getValue(variableName);
     }
+
+    @Override
+    public Expression deepCopy() {
+        return new VarExp(variableName);
+    }
 }

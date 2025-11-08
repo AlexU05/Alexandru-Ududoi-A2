@@ -23,4 +23,8 @@ public record LogicExp( Expression left,Expression right, String operator) imple
 
 
     }
+    @Override
+    public Expression deepCopy() {
+        return new LogicExp(left.deepCopy(), right.deepCopy(), operator);
+    }
 }

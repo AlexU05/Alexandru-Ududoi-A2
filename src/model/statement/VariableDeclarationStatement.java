@@ -18,4 +18,8 @@ public record VariableDeclarationStatement(Type type, String variableName) imple
         symbolTable.declareVariable(type, variableName);
         return state;
     }
+    @Override
+    public Statement deepCopy() {
+        return new VariableDeclarationStatement(type, variableName);
+    }
 }

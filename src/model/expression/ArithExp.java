@@ -27,4 +27,8 @@ public record ArithExp(Expression left, Expression right, String operator) imple
             };
 
     }
+    @Override
+    public Expression deepCopy() {
+        return new ArithExp(left.deepCopy(), right.deepCopy(), operator);
+    }
 }

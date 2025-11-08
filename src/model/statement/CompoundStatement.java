@@ -14,4 +14,8 @@ public record CompoundStatement
 
         return state;
     }
+    @Override
+    public Statement deepCopy() {
+        return new CompoundStatement(first.deepCopy(), second.deepCopy());
+    }
 }

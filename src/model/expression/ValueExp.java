@@ -7,4 +7,8 @@ public record ValueExp(Value value) implements Expression{
     public Value evaluate(SymbolTable symbolTable) {
         return value;
     }
+    @Override
+    public Expression deepCopy() {
+        return new ValueExp(value);
+    }
 }
