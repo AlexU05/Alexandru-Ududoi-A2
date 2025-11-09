@@ -18,4 +18,12 @@ public record IntegerValue(int value) implements Value {
     public Value deepCopy() {
         return new IntegerValue(value);
     }
+
+    @Override
+    public BooleanValue equals(Value other) {
+        if (other instanceof IntegerValue) {
+            return new BooleanValue(this.value == ((IntegerValue) other).value);
+        }
+        return new  BooleanValue(false);
+    }
 }

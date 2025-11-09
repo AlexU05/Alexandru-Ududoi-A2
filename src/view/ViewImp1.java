@@ -133,11 +133,12 @@ public class ViewImp1 implements View {
         SymbolTable symbolTable = new MapSymbolTable();
         Out out = new ListOut();
         stack.push(programs.get(progNumber - 1));
-
+        FileTable fileTable = new MapFileTable();
         ProgramState programState = new ProgramState(
                 stack,
                 symbolTable,
-                out
+                out,
+                fileTable
         );
         Repository repository = new RepositoryImp1(programState);
         Controller controller = new ControllerImp1(repository);

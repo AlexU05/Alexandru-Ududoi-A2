@@ -1,10 +1,13 @@
 package controller;
 
 import model.exception.EmptyExecutionStackException;
+import model.exception.InterpreterException;
 import model.statement.Statement;
 import repository.Repository;
 import state.ExecutionStack;
 import state.ProgramState;
+
+import java.io.IOException;
 
 public class ControllerImp1 implements Controller {
     private final Repository repository;
@@ -25,11 +28,16 @@ public class ControllerImp1 implements Controller {
     }
 
     @Override
-    public void allStep() {
+    public void allStep(){
         ProgramState programState = repository.getProgramState();
         while (!programState.executionStack().isEmpty()) {
             oneStep(programState);
             if(displayFlag) {
+                try {
+                    repository.logProgramState();
+                } catch (IOException e) {
+                    throw new InterpreterException(e.toString());
+                }
                 displayCurrentState();
             }
         }

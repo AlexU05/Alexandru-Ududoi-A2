@@ -18,4 +18,12 @@ public record BooleanValue(boolean value) implements Value {
     public Value deepCopy() {
         return new BooleanValue(value);
     }
+
+    @Override
+    public BooleanValue equals(Value other) {
+        if (other instanceof BooleanValue otherBool) {
+            return new BooleanValue(this.value == otherBool.value);
+        }
+        return new BooleanValue(false);
+    }
 }

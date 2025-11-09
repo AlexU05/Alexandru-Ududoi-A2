@@ -2,16 +2,27 @@ package model.type;
 
 import model.value.BooleanValue;
 import model.value.IntegerValue;
+import model.value.StringValue;
 import model.value.Value;
 
 public enum Type {
     INTEGER,
-    BOOLEAN;
+    BOOLEAN,
+    STRING;
 
     public Value getDefaultValue() {
         return switch (this) {
             case INTEGER -> new IntegerValue(0);
             case BOOLEAN -> new BooleanValue(false);
+            case STRING -> new StringValue("");
+        };
+    }
+
+    public Type deepCopy() {
+        return switch (this) {
+            case INTEGER -> Type.INTEGER;
+            case BOOLEAN -> Type.BOOLEAN;
+            case STRING -> Type.STRING;
         };
     }
 }
