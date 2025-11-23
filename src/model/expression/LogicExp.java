@@ -3,7 +3,9 @@ package model.expression;
 import model.exception.InvalidOperatorException;
 import model.value.Value;
 import state.SymbolTable;
+import state.Heap;
 import model.value.BooleanValue;
+
 public record LogicExp( Expression left,Expression right, String operator) implements Expression{
     @Override
     public Value evaluate(SymbolTable symbolTable) throws  InvalidOperatorException {
@@ -20,9 +22,25 @@ public record LogicExp( Expression left,Expression right, String operator) imple
         } else {
             throw new InvalidOperatorException(operator);
         }
-
-
     }
+
+    @Override
+    public Value evaluate(SymbolTable symbolTable, Heap heap) throws InvalidOperatorException {
+        Value leftValue = left.evaluate(symbolTable, heap);
+        Value rightValue = right.evaluate(symbolTable, heap);
+
+        if(leftValue instanceof BooleanValue(boolean value1) && rightValue instanceof BooleanValue(boolean value2)){
+
+            return switch (operator){
+                case "&&" -> new BooleanValue(value1 && value2);
+                case "||" -> new BooleanValue(value1 || value2);
+                default -> throw new InvalidOperatorException(operator);
+            };
+        } else {
+            throw new InvalidOperatorException(operator);
+        }
+    }
+
     @Override
     public Expression deepCopy() {
         return new LogicExp(left.deepCopy(), right.deepCopy(), operator);

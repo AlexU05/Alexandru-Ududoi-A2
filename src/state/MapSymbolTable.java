@@ -34,6 +34,12 @@ public class MapSymbolTable implements SymbolTable {
     public Value getValue(String variableName) {
         return symbolTable.get(variableName);
     }
+
+    @Override
+    public Map<String, Value> getContent() {
+        return new HashMap<>(symbolTable);
+    }
+
     @Override
     public String toString() {
         return "SymbolTable: " + symbolTable.toString();

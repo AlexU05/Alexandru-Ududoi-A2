@@ -9,8 +9,7 @@ public class StatementUtil {
 
 
     public static String evaluateToString(Expression expression, ProgramState state) {
-        if(!(expression.evaluate(state.symbolTable())
-                instanceof StringValue(String stringValue)))
+        if(!(expression.evaluate(state.symbolTable(), state.heap()) instanceof StringValue(String stringValue)))
         {
             throw new InvalidTypeException();
         }

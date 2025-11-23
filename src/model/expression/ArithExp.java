@@ -5,6 +5,7 @@ import model.exception.InvalidOperatorException;
 import model.exception.RuntimeInterpreterException;
 import model.value.Value;
 import state.SymbolTable;
+import state.Heap;
 import model.value.IntegerValue;
 
 public record ArithExp(Expression left, Expression right, String operator) implements Expression{
@@ -27,6 +28,26 @@ public record ArithExp(Expression left, Expression right, String operator) imple
             };
 
     }
+
+    @Override
+    public Value evaluate(SymbolTable symbolTable, Heap heap) throws DivisionByZeroException, InvalidOperatorException, RuntimeInterpreterException {
+        IntegerValue leftValue = (IntegerValue) left.evaluate(symbolTable, heap);
+        IntegerValue rightValue = (IntegerValue) right.evaluate(symbolTable, heap);
+
+        if(leftValue.getType() != rightValue.getType()){
+            throw new RuntimeInterpreterException("Invalid operand types for arithmetic expression");
+        }
+        if(operator.equals("/") && rightValue.value()  == 0 ) throw new DivisionByZeroException();
+        else
+            return switch (operator) {
+                case "+" -> new IntegerValue(leftValue.value() + rightValue.value());
+                case "-" -> new IntegerValue(leftValue.value() - rightValue.value());
+                case "*" -> new IntegerValue(leftValue.value() * rightValue.value());
+                case "/" -> new IntegerValue(leftValue.value() / rightValue.value());
+                default -> throw new InvalidOperatorException(operator);
+            };
+    }
+
     @Override
     public Expression deepCopy() {
         return new ArithExp(left.deepCopy(), right.deepCopy(), operator);

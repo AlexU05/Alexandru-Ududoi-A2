@@ -3,17 +3,17 @@ package controller;
 import model.exception.EmptyExecutionStackException;
 import model.exception.InterpreterException;
 import model.statement.Statement;
-import repository.Repository;
+import repository.RepositoryInterface;
 import state.ExecutionStack;
 import state.ProgramState;
 
 import java.io.IOException;
 
 public class ControllerImp1 implements Controller {
-    private final Repository repository;
+    private final RepositoryInterface repositoryInterface;
     private boolean displayFlag;
-    public ControllerImp1(Repository repository) {
-        this.repository = repository;
+    public ControllerImp1(RepositoryInterface repositoryInterface) {
+        this.repositoryInterface = repositoryInterface;
         this.displayFlag = true;
     }
 
@@ -29,12 +29,22 @@ public class ControllerImp1 implements Controller {
 
     @Override
     public void allStep(){
-        ProgramState programState = repository.getProgramState();
+        ProgramState programState = repositoryInterface.getProgramState();
         while (!programState.executionStack().isEmpty()) {
-            oneStep(programState);
+            programState = oneStep(programState);
+            try {
+                var symValues = programState.symbolTable().getContent().values();
+                var heapContent = programState.heap().getContent();
+                var newHeap = GarbageCollector.safeGarbageCollector(symValues, heapContent);
+                programState.heap().setContent(newHeap);
+            } catch (Exception e) {
+                throw new InterpreterException(e.toString());
+            }
+
+            repositoryInterface.setProgramState(programState);
             if(displayFlag) {
                 try {
-                    repository.logProgramState();
+                    repositoryInterface.logProgramState();
                 } catch (IOException e) {
                     throw new InterpreterException(e.toString());
                 }
@@ -45,7 +55,7 @@ public class ControllerImp1 implements Controller {
 
     @Override
     public void displayCurrentState() {
-        ProgramState programState = repository.getProgramState();
+        ProgramState programState = repositoryInterface.getProgramState();
         System.out.println(programState + "\n");
     }
 

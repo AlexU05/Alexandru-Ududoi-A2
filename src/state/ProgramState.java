@@ -6,7 +6,8 @@ public record ProgramState(
         ExecutionStack executionStack,
         SymbolTable symbolTable,
         Out out,
-        FileTable fileTable) {
+        FileTable fileTable,
+        Heap heap) {
 
     @Override
     public String toString() {
@@ -14,7 +15,8 @@ public record ProgramState(
                 "\nexecutionStack: " + executionStack + ", " +
                 "\nsymbolTable: " + symbolTable + ", " +
                 "\nout: " + out +
-                "\nfileTable: " + fileTable + "\n";
+                "\nfileTable: " + fileTable +
+                "\nheap: " + heap + "\n";
 
     }
 }

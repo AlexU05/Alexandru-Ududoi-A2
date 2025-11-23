@@ -11,7 +11,7 @@ public record IfStatement
 
     @Override
     public ProgramState execute(ProgramState state) throws InvalidConditionTypeException{
-        Value value = condition.evaluate(state.symbolTable());
+        Value value = condition.evaluate(state.symbolTable(), state.heap());
         if (!(value instanceof BooleanValue booleanValue)) {
             throw new InvalidConditionTypeException("If statement is not a boolean");
         }
