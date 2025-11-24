@@ -7,13 +7,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GarbageCollector {
-    public static List<Integer> getAddrFromSymTable(Collection<Value> symTableValues) {
-        return symTableValues.stream()
-                .filter(v -> v instanceof ReferenceValue)
-                .map(v -> ((ReferenceValue) v).getAddr())
-                .collect(Collectors.toList());
-    }
-
     public static Set<Integer> getReachableAddresses(Collection<Value> symTableValues, Map<Integer, Value> heap) {
         Set<Integer> reachable = new HashSet<>();
         Deque<Integer> stack = new ArrayDeque<>();
